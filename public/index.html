@@ -11,7 +11,18 @@
 
 
 
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
 
+    socket.on('connect', () => {
+      console.log("Connected to the server");
+    });
+
+    socket.on('disconnect', () => {
+      console.log("Disconnect from the server");
+    })
+  </script>
 
 </body>
 </html>
