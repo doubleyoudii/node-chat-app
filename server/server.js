@@ -13,21 +13,27 @@ const io = socketIO(server);
 io.on('connection', (socket) => {
   console.log('User Connected');
 
-  socket.emit('newMessage', {
-    from: "willyumburjer@gmail.com",
-    text: "testing New Message function",
-    createAt: new Date().getTime() 
-  })
+  // socket.emit('newMessage', {
+  //   from: "willyumburjer@gmail.com",
+  //   text: "testing New Message function",
+  //   createAt: new Date().getTime() 
+  // })
 
   socket.on('createMessage', (message) => {
     console.log('New message receive ', message);
+
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
   });
  
   socket.on('disconnect', () => {
     console.log('User Disconnect')
   })
 
-  // socket.emit('newEmail', {
+  // socket.emit('newEmail', { 
   //   from: "willyumburjer@gmail.com",
   //   text: "TaddaImhome",
   //   createAt: new Date().getTime() 
