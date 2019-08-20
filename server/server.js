@@ -25,12 +25,14 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Connected'));
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, cback) => {
     console.log('New message receive ', message);
 
     //Sends newly Created Message to All
     io.emit('newMessage', generateMessage(message.from, message.text));
 
+    //Acknoledgements````````````````
+    cback('this is from the server');
     //Send newly created message to all but you
     // socket.broadcast.emit('newMessage', {
     //   from: message.from,
