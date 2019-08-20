@@ -19,14 +19,35 @@ io.on('connection', (socket) => {
   //   createAt: new Date().getTime() 
   // })
 
+  socket.emit('newMessage', {
+    from: 'admin',
+    text: 'Welcome to chat app',
+    createdAt: new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage', {
+    from: 'admin',
+    text: 'New User join',
+    createdAt: new Date().getTime()
+
+  })
+
   socket.on('createMessage', (message) => {
     console.log('New message receive ', message);
 
+    //Sends newly Created Message to All
     io.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
-    })
+    });
+
+    //Send newly created message to all but you
+    // socket.broadcast.emit('newMessage', {
+    //   from: message.from,
+    //   text: message.text,
+    //   createdAt: new Date().getTime()
+    // })
   });
  
   socket.on('disconnect', () => {
