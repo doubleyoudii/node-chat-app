@@ -1,3 +1,5 @@
+// var moment = require('moment');
+
 var socket = io();
 
 var messageForm = document.getElementById('message_form');
@@ -24,19 +26,23 @@ socket.on('disconnect', function() {
 // });
 socket.on('newMessage', function(message) {
   console.log('New message receive ', message);
+  var formattedTime = moment(message.createdAt).format('h:mm a');
 
   var ul = document.querySelector('#chatbox');
   var mk = `
-  <li class="chatbox_list">${message.from}: ${message.text}</li>
+  <li class="chatbox_list">${message.from} ${formattedTime} : ${message.text} </li>
   `;
 
   ul.insertAdjacentHTML('beforebegin', mk);
 });
 
 socket.on('newLocationMessage', function(location) {
+  var formattedTime = moment(message.createdAt).format('h:mm a');
+
   var ul = document.querySelector('#chatbox');
+
   var string = `
-  <li class="chatbox_list">${location.from}: <a href="${location.url}" target="_blank">This is my location</a></li>
+  <li class="chatbox_list">${location.from} ${location.formattedTime}: <a href="${location.url}" target="_blank">This is my location</a></li>
   `
   console.log(location.url);
   ul.insertAdjacentHTML('beforebegin', string);
