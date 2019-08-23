@@ -4,25 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./css/style.css">
   <title>Web Socket</title>
 </head>
-<body>
-  <p>Welcome to the chat app</p>
+<body class="chat">
 
-  <div>
-    <ul class="chatbox">
+  <div class="chat__sidebar">
+    <h3>PEople</h3>
+    <div id="users">
+      <!-- <li>List of people that join the chat</li> -->
+    </div>
+  </div>
+
+  <div class="chat__main">
+
+    <ol id="chatbox" class="chat__messages">
       <!-- <li class="chatbox_list">from: text</li> -->
       <!-- <li><a href="#" target="_blank"></a>This is my location</li> -->
 
-    </ul>
+    </ol>
+
+    <div class="chat__footer">
+        <form id="message_form" >
+          <input class= "message_form-text" type="text" name="message" placeholder="Enter Message" autofocus autocomplete="off">
+          <button>Send</button>
+        </form>
+      
+        <button id="send-location">Send Location</button>
+    </div>
   </div>
 
-  <form id="message_form" >
-    <input class= "message_form-text" type="text" name="message" placeholder="Enter Message">
-    <button>Send</button>
-  </form>
-
-  <button id="send-location">Send Location</button>
+  
 
 
 

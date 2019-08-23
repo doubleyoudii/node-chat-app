@@ -32,10 +32,10 @@ io.on('connection', (socket) => {
     io.emit('newMessage', generateMessage(message.from, message.text));
 
     //Acknoledgements````````````````
-    cback('this is from the server');
+    cback();
 
 
-  });
+  }); 
 
   
   socket.on('createLocationMessage', (coords) => {
