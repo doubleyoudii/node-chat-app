@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 io.on('connection', (socket) => {
   console.log('User Connected');
@@ -28,19 +28,20 @@ io.on('connection', (socket) => {
   socket.on('createMessage', (message, cback) => {
     console.log('New message receive ', message);
 
-    //Sends newly Created Message to All
+    //Sends newly Created Message to All client
     io.emit('newMessage', generateMessage(message.from, message.text));
 
     //Acknoledgements````````````````
     cback('this is from the server');
-    //Send newly created message to all but you
-    // socket.broadcast.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // })
+
+
   });
- 
+
+  
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+  });
+
   socket.on('disconnect', () => {
     console.log('User Disconnect')
   })
