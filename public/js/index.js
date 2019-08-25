@@ -1,9 +1,15 @@
 // var moment = require('moment');
 
-var socket = io();
-
+//Selectors```````````````````````````````
+var messageTemplate = document.querySelector('#message-template');
+var locMessageTemplate = document.querySelector('#location-message-template');
 var messageForm = document.getElementById('message_form');
 var locationButton = document.getElementById('send-location');
+var ul = document.querySelector('#chatbox');
+
+var socket = io();
+
+
 
 socket.on('connect', function() {
   console.log("Connected to the server");
@@ -25,28 +31,45 @@ socket.on('disconnect', function() {
 //   console.log('New email receive ', email);
 // });
 socket.on('newMessage', function(message) {
-  console.log('New message receive ', message);
   var formattedTime = moment(message.createdAt).format('h:mm a');
+  var template = messageTemplate.innerHTML;
+  var html = Mustache.render(template, {
+    text: message.text,
+    from: message.from,
+    createdAt: formattedTime
+  });
 
-  var ul = document.querySelector('#chatbox');
-  var mk = `
-  <li class="chatbox_list">${message.from} ${formattedTime} : ${message.text} </li>
-  `;
+  ul.insertAdjacentHTML('beforebegin', html);
 
-  ul.insertAdjacentHTML('beforebegin', mk);
+  // console.log('New message receive ', message);
+  // var formattedTime = moment(message.createdAt).format('h:mm a');
+
+  // var ul = document.querySelector('#chatbox');
+  // var mk = `
+  // <li class="chatbox_list">${message.from} ${formattedTime} : ${message.text} </li>
+  // `;
+
+  // ul.insertAdjacentHTML('beforebegin', mk);
 });
 
 socket.on('newLocationMessage', function(location) {
-  var formattedTime = moment(message.createdAt).format('h:mm a');
+  var formattedTime = moment(location.createdAt).format('h:mm a');
+  var template = locMessageTemplate.innerHTML;
+  var html = Mustache.render(template, {
+    url: location.url,
+    from: location.from,
+    createdAt: formattedTime
+  });
+  
+  ul.insertAdjacentHTML('beforebegin', html);
 
-  var ul = document.querySelector('#chatbox');
-
-  var string = `
-  <li class="chatbox_list">${location.from} ${location.formattedTime}: <a href="${location.url}" target="_blank">This is my location</a></li>
-  `
-  console.log(location.url);
-  ul.insertAdjacentHTML('beforebegin', string);
+  // var string = `
+  // <li class="chatbox_list">${location.from} ${formattedTime}: <a href="${location.url}" target="_blank">This is my location</a></li>
+  // `
+  // console.log(location.url);
+  // ul.insertAdjacentHTML('beforebegin', string);
 });
+
 //Acknoledgements````````````````
 // socket.emit('createMessage', {
 //   from: 'katiie',
