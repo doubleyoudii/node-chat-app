@@ -9,32 +9,36 @@
 </head>
 <body class="chat">
 
-  <div class="chat__sidebar">
-    <h3>PEople</h3>
-    <div id="users">
-      <!-- <li>List of people that join the chat</li> -->
-    </div>
-  </div>
+   
 
-  <div class="chat__main">
-
-    <ol id="chatbox" class="chat__messages">
-      <!-- <li class="chatbox_list">from: text</li> -->
-      <!-- <li><a href="#" target="_blank"></a>This is my location</li> -->
-
-    </ol>
-
-    <div class="chat__footer">
-        <form id="message_form" >
-          <input class= "message_form-text" type="text" name="message" placeholder="Enter Message" autofocus autocomplete="off">
-          <button>Send</button>
-        </form>
+  <!-- <div class="main__container"> -->
+      <div class="chat__sidebar">
+          <h3>PEople</h3>
+          <div id="users"> 
+            
+          </div>
+      </div>
       
-        <button id="send-location">Send Location</button>
-    </div>
-  </div>
+        <div class="chat__main">
+          <div class="chat__messages" id="dib">
+              <ol id="chatbox" ></ol>
+          </div>
+          
 
-  
+          <div class="chat__footer">
+              <form id="message_form" >
+                <input class= "message_form-text" type="text" name="message" placeholder="Enter Message" autofocus autocomplete="off">
+                <button>Send</button>
+              </form>
+            
+              <button id="send-location">Send Location</button>
+          </div>
+        </div>
+        
+          
+        
+  <!-- </div> -->
+
 
   <script id="message-template" type="text/template">
     <li class="message">
@@ -48,7 +52,7 @@
     </li>
   </script>
 
-  <script id="location-message-template" type="text/template">
+  <script type="text/template">
     <li class="message">
       <div class="message__title">
         <h4>{{from}}</h4>

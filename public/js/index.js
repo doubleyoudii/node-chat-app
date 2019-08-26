@@ -10,14 +10,36 @@ var ul = document.querySelector('#chatbox');
 var socket = io();
 
 
+//SCROLL Effect`````````````````````````````````
+function scrollToBottom () {
+
+  //SELECTORS
+  var messages = $("#dib");
+  // var newMessage = $("#dib");
+  var newMessage = $("#dib").children("li");
+
+
+  //HEIGHTs
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight();
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    // console.log('Must scroll!!!');
+    messages.scrollTop(scrollHeight);
+  }
+  // console.log(newMessage, clientHeight , scrollTop , newMessageHeight , lastMessageHeight, scrollHeight);
+}
+
+
+//
+
 
 socket.on('connect', function() {
   console.log("Connected to the server");
 
-  // socket.emit('createMessage', {
-  //   to: 'kate@example.com',
-  //   text: "Hi powcxxzxc"
-  // }); 
 });
 
 
@@ -27,9 +49,7 @@ socket.on('disconnect', function() {
   
 });
 
-// socket.on('newEmail', function(email) {
-//   console.log('New email receive ', email);
-// });
+
 socket.on('newMessage', function(message) {
   var formattedTime = moment(message.createdAt).format('h:mm a');
   var template = messageTemplate.innerHTML;
@@ -40,16 +60,8 @@ socket.on('newMessage', function(message) {
   });
 
   ul.insertAdjacentHTML('beforebegin', html);
-
-  // console.log('New message receive ', message);
-  // var formattedTime = moment(message.createdAt).format('h:mm a');
-
-  // var ul = document.querySelector('#chatbox');
-  // var mk = `
-  // <li class="chatbox_list">${message.from} ${formattedTime} : ${message.text} </li>
-  // `;
-
-  // ul.insertAdjacentHTML('beforebegin', mk);
+  scrollToBottom();
+ 
 });
 
 socket.on('newLocationMessage', function(location) {
@@ -62,22 +74,15 @@ socket.on('newLocationMessage', function(location) {
   });
   
   ul.insertAdjacentHTML('beforebegin', html);
+  scrollToBottom();
 
-  // var string = `
-  // <li class="chatbox_list">${location.from} ${formattedTime}: <a href="${location.url}" target="_blank">This is my location</a></li>
-  // `
-  // console.log(location.url);
-  // ul.insertAdjacentHTML('beforebegin', string);
 });
 
 //Acknoledgements````````````````
-// socket.emit('createMessage', {
-//   from: 'katiie',
-//   text: 'Hi powzcx'
-// }, function(data) {
-//   console.log('Got this', data);
-// });
+//
 
+
+//EVENTS```````````````````````````````````````````````````````
 $('#message_form').on('submit', function (e) {
   e.preventDefault();
 
@@ -99,8 +104,6 @@ locationButton.addEventListener('click', function() {
 
   $('#send-location').prop('disabled', true).text('Sending Location...');
 
-  //$("input").prop('disabled', true);
-  //$("input").prop('disabled', false);
 
   navigator.geolocation.getCurrentPosition(function (position) {
     console.log(position);

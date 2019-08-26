@@ -9,6 +9,7 @@
 
 ul, li {
   list-style-position: inside;
+  height: 60px;
 }
 
 h3 {
@@ -192,4 +193,8 @@ button:disabled {
   .chat__footer button {
     margin-right: 0px;
   }
+
+  /* .mess-contain {
+
+  } */
 }
