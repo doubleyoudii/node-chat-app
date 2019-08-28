@@ -7,6 +7,10 @@ var messageForm = document.getElementById('message_form');
 var locationButton = document.getElementById('send-location');
 var ul = document.querySelector('#chatbox');
 
+var userList = document.querySelector('.users-list');
+var userDiv = document.querySelector('#users');
+
+
 var socket = io();
 
 
@@ -38,7 +42,19 @@ function scrollToBottom () {
 
 
 socket.on('connect', function() {
-  console.log("Connected to the server");
+  // console.log("Connected to the server");
+
+  var params = $.deparam(window.location.search);
+
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href= '/';
+    } else {
+      console.log('No error');
+    }
+  });
+
 
 });
 
@@ -46,6 +62,29 @@ socket.on('connect', function() {
 socket.on('disconnect', function() {
   console.log("Disconnect from the server");
 
+  
+});
+
+socket.on('updateUsersList', function(users) {
+
+  userList.innerHTML = "";
+
+  const renderUser = (people) => {
+    const markup = `
+      <li>${people}</li>
+    `;
+
+    userList.insertAdjacentHTML('beforeend', markup);
+  };
+
+  // var ulList = `
+  //   <ol>
+  //     <li>User!</li>
+  //   </ol> 
+  // `
+
+  users.forEach(renderUser);
+  // userDiv.innerHTML = ulList;
   
 });
 
