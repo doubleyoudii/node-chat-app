@@ -20,14 +20,7 @@ const {generateMessage, generateLocationMessage} = require('./utils/message');
 io.on('connection', (socket) => {
   console.log('User Connected');
 
-  // socket.emit('newMessage', {
-  //   from: "willyumburjer@gmail.com",
-  //   text: "testing New Message function",
-  //   createAt: new Date().getTime() 
-  // })
-
   
-
   socket.on('join', (params, cback) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return cback('Name and Room name is required and must be Valid!');
@@ -47,19 +40,26 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createMessage', (message, cback) => {
-    console.log('New message receive ', message);
+    var user = users.getUser(socket.id);
 
-    //Sends newly Created Message to All client
-    io.emit('newMessage', generateMessage(message.from, message.text));
+    if (user && isRealString(message.text)) {
+
+      //Sends newly Created Message to All client
+      io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+    }
 
     //Acknoledgements````````````````
     cback();
 
-
   }); 
   
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocationMessage', generateLocationMessage('User', coords.latitude, coords.longitude));
+    var user = users.getUser(socket.id);
+
+    if(user) {
+
+      io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+    }
   });
 
   socket.on('disconnect', () => {
@@ -74,11 +74,6 @@ io.on('connection', (socket) => {
 
   })
 
-  // socket.emit('newEmail', { 
-  //   from: "willyumburjer@gmail.com",
-  //   text: "TaddaImhome",
-  //   createAt: new Date().getTime() 
-  // })
  
 })
 

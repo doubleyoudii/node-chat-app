@@ -1,4 +1,4 @@
-// var moment = require('moment');
+
 
 //Selectors```````````````````````````````
 var messageTemplate = document.querySelector('#message-template');
@@ -34,11 +34,9 @@ function scrollToBottom () {
     // console.log('Must scroll!!!');
     messages.scrollTop(scrollHeight);
   }
-  // console.log(newMessage, clientHeight , scrollTop , newMessageHeight , lastMessageHeight, scrollHeight);
+  
 }
 
-
-//
 
 
 socket.on('connect', function() {
@@ -77,14 +75,8 @@ socket.on('updateUsersList', function(users) {
     userList.insertAdjacentHTML('beforeend', markup);
   };
 
-  // var ulList = `
-  //   <ol>
-  //     <li>User!</li>
-  //   </ol> 
-  // `
 
   users.forEach(renderUser);
-  // userDiv.innerHTML = ulList;
   
 });
 
@@ -117,8 +109,6 @@ socket.on('newLocationMessage', function(location) {
 
 });
 
-//Acknoledgements````````````````
-//
 
 
 //EVENTS```````````````````````````````````````````````````````
@@ -126,7 +116,6 @@ $('#message_form').on('submit', function (e) {
   e.preventDefault();
 
   socket.emit('createMessage', {
-    from: 'User',
     text: $('[name=message]').val()
   }, function() {
     //acknowledgement
